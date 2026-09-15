@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS hotel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE hotel;
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS riwayat_menginap; DROP TABLE IF EXISTS reservasi; DROP TABLE IF EXISTS layanan; DROP TABLE IF EXISTS kamar; DROP TABLE IF EXISTS tamu;
+SET FOREIGN_KEY_CHECKS=1;
+CREATE TABLE tamu(id INT AUTO_INCREMENT PRIMARY KEY,nama VARCHAR(120) NOT NULL,gender VARCHAR(20) NOT NULL,umur INT NOT NULL,telepon VARCHAR(30),alamat VARCHAR(255));
+CREATE TABLE kamar(id INT AUTO_INCREMENT PRIMARY KEY,nomor VARCHAR(20) NOT NULL,tipe VARCHAR(100),harga DECIMAL(12,2) DEFAULT 0);
+CREATE TABLE reservasi(id INT AUTO_INCREMENT PRIMARY KEY,tamu_id INT NOT NULL,kamar_id INT NOT NULL,tanggal DATE NOT NULL,waktu TIME NOT NULL,status VARCHAR(30) NOT NULL,FOREIGN KEY(tamu_id) REFERENCES tamu(id) ON DELETE CASCADE,FOREIGN KEY(kamar_id) REFERENCES kamar(id) ON DELETE CASCADE);
+CREATE TABLE riwayat_menginap(id INT AUTO_INCREMENT PRIMARY KEY,tamu_id INT NOT NULL,kamar_id INT NOT NULL,tanggal DATE NOT NULL,catatan VARCHAR(255),layanan VARCHAR(255),FOREIGN KEY(tamu_id) REFERENCES tamu(id) ON DELETE CASCADE,FOREIGN KEY(kamar_id) REFERENCES kamar(id) ON DELETE CASCADE);
+CREATE TABLE layanan(id INT AUTO_INCREMENT PRIMARY KEY,nama VARCHAR(120) NOT NULL,kategori VARCHAR(100),stok INT DEFAULT 0,satuan VARCHAR(30),harga DECIMAL(12,2) DEFAULT 0);
+INSERT INTO tamu(nama,gender,umur,telepon,alamat) VALUES ('Siti Rahma','Perempuan',28,'081234567890','Padang'),('Andi Pratama','Laki-laki',34,'082233445566','Padang'),('Dina Maharani','Perempuan',22,'083344556677','Kuranji'),('Rizky Akbar','Laki-laki',40,'084455667788','Lubuk Begalung');
+INSERT INTO kamar(nomor,tipe,harga) VALUES ('101','Standard',350000),('201','Deluxe',550000),('301','Suite',950000);
+INSERT INTO reservasi(tamu_id,kamar_id,tanggal,waktu,status) VALUES (1,1,CURDATE(),'14:00:00','Dipesan'),(2,2,CURDATE(),'11:30:00','Selesai'),(3,3,CURDATE(),'15:00:00','Dipesan');
+INSERT INTO riwayat_menginap(tamu_id,kamar_id,tanggal,catatan,layanan) VALUES (1,1,CURDATE(),'Check-in reguler, kamar bersih','Sarapan pagi'),(2,2,DATE_SUB(CURDATE(),INTERVAL 2 DAY),'Late check-out disetujui','Laundry & spa');
+INSERT INTO layanan(nama,kategori,stok,satuan,harga) VALUES ('Air Mineral','Minibar',45,'Botol',12000),('Snack Box','Minibar',7,'Paket',18000),('Handuk Extra','Amenities',32,'Pcs',25000),('Laundry Kilat','Laundry',18,'Paket',15000);
