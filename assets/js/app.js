@@ -1,0 +1,1 @@
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open")}function filterTable(inputId,tableId){let q=document.getElementById(inputId).value.toLowerCase();document.querySelectorAll("#"+tableId+" tbody tr").forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?"":"none")}
